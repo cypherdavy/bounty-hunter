@@ -1,0 +1,17 @@
+
+---
+
+### **2. `requirements.txt`**
+
+The `requirements.txt` file will list all the dependencies needed to run the tool. Ensure you have all the libraries mentioned in your code.
+
+```txt
+requests==2.28.1
+beautifulsoup4==4.11.1
+dnspython==2.2.1
+paramiko==2.10.3
+shodan==1.26.1
+python-nmap==0.7.1
+sqlmap==1.5.0
+scapy==2.4.5
+pyshark==0.4.0.8
