@@ -1,20 +1,56 @@
-# Bounty Hunter Tool
+# Bounty Hunter - The Ultimate Bug Hunting Tool
 
-**Bounty Hunter** is an advanced bug-hunting tool designed to automate the entire bug bounty process, including reconnaissance, scanning, exploitation, PoC generation, and reporting. It integrates various scanning tools and exploits common vulnerabilities like XSS, SQL Injection, RCE, and more.
+### Introduction
 
-## Features
-- **Reconnaissance**: Subdomain enumeration, port scanning, tech stack detection.
-- **Vulnerability Scanning**: Automatic scan for common vulnerabilities like XSS, SQL Injection, etc.
-- **Exploitation**: Automated exploitation of discovered vulnerabilities (e.g., XSS, SQLi, RCE).
-- **PoC Generation**: Automatically generate Proof of Concepts for vulnerabilities.
-- **Reporting**: Create detailed PDF or HTML reports with findings and exploitation steps.
+Bounty Hunter is an advanced, automated tool designed for bug hunters and penetration testers. It integrates a variety of attacks, reconnaissance, and vulnerability testing functions that can be executed with just one click. By simply providing a target URL or domain, this tool performs various security tests like SQL Injection, Cross-Site Scripting (XSS), Remote Code Execution (RCE), Subdomain Discovery, and many more.
 
-## Requirements
-- Python 3.6+
-- Install dependencies via `pip install -r requirements.txt`.
+### Features
 
-## How to Use
+- **Reconnaissance:** Automatically gathers information about the target.
+- **Vulnerability Scanning:** Tests for common web vulnerabilities like RCE, LFI/RFI, CSRF, XSS, and SQL Injection.
+- **Exploitation:** Attempts to exploit identified vulnerabilities (use responsibly!).
+- **Reporting:** Automatically generates reports summarizing the findings and proof of concept (PoC).
+- **Subdomain Enumeration** and **Brute Force Attacks**.
+
+### Requirements
+
+To run the tool, ensure you have the following installed:
+
+- **Python 3.8+**
+- **Required Python Libraries** (listed in `requirements.txt`)
+
+### Installation
+
 1. Clone the repository:
-   ```bash
-   git clone https://github.com/cypherdavy/bounty-hunter
-   cd bounty-hunter
+    ```bash
+    git clone https://github.com/yourusername/bounty-hunter.git
+    cd bounty-hunter
+    ```
+
+2. Install dependencies:
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+### Usage
+
+1. Run the tool with the target URL:
+    ```bash
+    python main.py
+    ```
+
+2. You will be prompted to enter a target URL:
+    ```bash
+    Enter the target URL: http://example.com
+    ```
+
+3. The tool will run through all tests and generate a report.
+
+#### Command Line Options:
+
+- **-h, --help**: Displays the help message.
+- **-u, --url**: Specify the target URL to run the tests.
+  
+Example:
+```bash
+python main.py -u http://example.com
