@@ -4,7 +4,7 @@ def exploit_rce(target_url, payload):
     """Attempt Remote Code Execution (RCE) exploitation."""
     try:
         response = requests.get(target_url + payload)
-        if "root" in response.text:  # Check if the payload worked
+        if "root" in response.text: 
             print(f"RCE attack successful with payload: {payload}")
             return True
         else:
