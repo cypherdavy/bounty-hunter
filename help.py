@@ -20,10 +20,10 @@ from ssl_test import test_ssl_security
 from subdomain_finder import find_subdomains
 from zap_scan import zap_scan
 
-# Initialize ArgumentParser
+
 parser = argparse.ArgumentParser(description='Bounty Hunter - Automated Bug Hunting Tool')
 
-# Command arguments
+
 parser.add_argument('-u', '--url', type=str, help='Target URL for testing')
 parser.add_argument('-r', '--recon', action='store_true', help='Run reconnaissance phase')
 parser.add_argument('-b', '--brute-force', action='store_true', help='Run brute-force login attacks')
@@ -42,23 +42,21 @@ parser.add_argument('-h', '--help', action='help', help='Show this help message 
 
 args = parser.parse_args()
 
-# Attack and scan configurations
+
 username_list = ["admin", "test", "root"]
 password_list = ["admin123", "password123", "123456"]
 payloads_sql_injection = ["' OR 1=1 --", "' OR 'a'='a", "'; DROP TABLE users; --"]
 subdomain_wordlist = ["www", "dev", "staging", "api", "shop"]
 
-# Main function to automate all tests
 def run_automated_tests(target_url):
     print(f"\nStarting automated tests on {target_url}...\n")
     
-    # Recon Phase
+
     if args.recon:
         print("\nStarting reconnaissance phase...\n")
         recon(target_url)
         subdomains = find_subdomains(target_url)
-
-    # Attack Phase
+        
     if args.brute_force:
         print("\nRunning brute-force login...\n")
         brute_force_login(target_url, username_list, password_list)
@@ -107,13 +105,11 @@ def run_automated_tests(target_url):
         print("\nRunning ZAP scan...\n")
         zap_scan(target_url)
 
-    # Generate Report
     print("Generating Report...")
     generate_report(target_url)
 
     print("\nAutomation complete!")
 
-# Entry point of the program
 if __name__ == "__main__":
     if args.url:
         target_url = args.url
