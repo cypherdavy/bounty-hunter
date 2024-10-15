@@ -15,13 +15,12 @@ def subdomain_enumeration(domain):
     return subdomains
 
 def port_scan(domain):
-    # Placeholder for port scanning logic
     print(f"Port scanning for {domain}")
-    # Use tools like Nmap or integrate with python-nmap for actual scanning.
+
 
 def tech_stack_detection(domain):
     print(f"Detecting technology stack for {domain}")
-    # Example: Integrate with WhatWeb or Wappalyzer API for tech stack detection.
+    # HI GUYS Z403 HERE NAMMAKK IVIDE WAPPALYZER RESULT VELLOM ADD CHEYDHALO??? WITH APIS OR SOMETHING
 
 if __name__ == "__main__":
     domain = input("Enter the target domain: ")
