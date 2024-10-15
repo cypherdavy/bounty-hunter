@@ -17,15 +17,13 @@ def start_scan():
 
 def generate_report_callback():
     target = target_entry.get()
-    scan_results = zap_scan(target)  # In real implementation, load from stored results
+    scan_results = zap_scan(target)
     generate_report(scan_results)
     messagebox.showinfo("Report", "Vulnerability report generated successfully.")
 
-# Create the main application window
 root = tk.Tk()
 root.title("Bounty Hunter - Automated Bug Bounty Tool")
 
-# Input frame
 input_frame = tk.Frame(root)
 input_frame.pack(pady=10)
 
@@ -33,7 +31,6 @@ tk.Label(input_frame, text="Target URL:").grid(row=0, column=0, padx=5)
 target_entry = tk.Entry(input_frame, width=50)
 target_entry.grid(row=0, column=1, padx=5)
 
-# Button frame
 button_frame = tk.Frame(root)
 button_frame.pack(pady=10)
 
@@ -43,14 +40,12 @@ scan_button.grid(row=0, column=0, padx=10)
 report_button = tk.Button(button_frame, text="Generate Report", command=generate_report_callback)
 report_button.grid(row=0, column=1, padx=10)
 
-# Log output frame
 log_frame = tk.Frame(root)
 log_frame.pack(pady=10)
 
 log_text = tk.Text(log_frame, width=80, height=20)
 log_text.pack()
 
-# Branding
 footer = tk.Label(root, text="Made by Davycipher", font=("Helvetica", 10), fg="grey")
 footer.pack(side=tk.BOTTOM)
 
