@@ -1,5 +1,6 @@
 # Bounty Hunter - The Ultimate Bug Hunting Tool
 
+
 ### Introduction
 
 Bounty Hunter is an advanced, automated tool designed for bug hunters and penetration testers. It integrates a variety of attacks, reconnaissance, and vulnerability testing functions that can be executed with just one click. By simply providing a target URL or domain, this tool performs various security tests like SQL Injection, Cross-Site Scripting (XSS), Remote Code Execution (RCE), Subdomain Discovery, and many more.
