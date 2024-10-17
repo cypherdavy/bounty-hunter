@@ -1,10 +1,16 @@
 import myinfo
+from subdomain import scanner
 
 def run_automated_tests(target_url):
-    pass
+    print("Scanning subdomains, please wait...")
+    user_choice = input("Do you want to scan subdomains? (yes or no): ").strip().lower()
+    if user_choice in ['yes', 'y']:
+        scanner.scan_subdomains(target_url)
+    else:
+        print("Skipping subdomain scan.")
 
 if __name__ == "__main__":
-    target_url = input("Enter the target URL: ")
+    target_url = input("Enter the target URL : ")
     whois_info = myinfo.get_whois_info(target_url)
     if 'error' not in whois_info:
         formatted_whois = myinfo.format_whois_info(whois_info)
@@ -21,7 +27,7 @@ if __name__ == "__main__":
             formatted_ip_info = None
         else:
             formatted_ip_info = myinfo.format_ip_info(ip_address, ip_info)
-    print("Website info:")
+    print("Website info :")
     if formatted_whois:
         print(f"Website IP : {formatted_ip_info['ip_address'] if formatted_ip_info else 'N/A'}")
         print(f"Country : {formatted_ip_info['country'] if formatted_ip_info else 'N/A'}")
@@ -29,4 +35,5 @@ if __name__ == "__main__":
         print(f"Registry Expiry Date : {formatted_whois['registry_expiry_date']}")
     else:
         print("Website IP and country information not available.")
+    
     run_automated_tests(target_url)
