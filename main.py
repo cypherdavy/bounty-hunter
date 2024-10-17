@@ -1,4 +1,6 @@
-import time
+
+
+'''import time
 from brute_force_login import brute_force_login
 from csrf_attack import exploit_csrf
 from dir_buster import brute_force_directories
@@ -178,3 +180,4 @@ def run_automated_tests(target_url):
 if __name__ == "__main__":
     target_url = input("Enter the target URL: ")
     run_automated_tests(target_url)
+    '''
