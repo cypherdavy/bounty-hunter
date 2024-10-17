@@ -3,6 +3,9 @@ beautifulsoup4==4.11.1
 dnspython==2.2.1
 paramiko==2.10.3
 shodan==1.26.1
+myinfo==1.1.1
+subspy==2.2.3
+validlink==0.2
 python-nmap==0.7.1
 sqlmap==1.5.0
 scapy==2.4.5
