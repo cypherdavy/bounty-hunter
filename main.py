@@ -21,9 +21,6 @@ from zap_scan import zap_scan
 
 
 username_list = ["admin", "test", "root"]
-password_list = ["admin123", "password123", "123456"]
-payloads_sql_injection = ["' OR 1=1 --", "' OR 'a'='a", "'; DROP TABLE users; --"]
-subdomain_wordlist = ["www", "dev", "staging", "api", "shop"]
 
 def run_automated_tests(target_url):
     print(f"\nStarting automated tests on {target_url}...\n")
@@ -114,9 +111,6 @@ from zap_scan import zap_scan
 
 
 username_list = ["admin", "test", "root"]
-password_list = ["admin123", "password123", "123456"]
-payloads_sql_injection = ["' OR 1=1 --", "' OR 'a'='a", "'; DROP TABLE users; --"]
-subdomain_wordlist = ["www", "dev", "staging", "api", "shop"]
 
 def run_automated_tests(target_url):
     print(f"\nStarting automated tests on {target_url}...\n")
