@@ -10,9 +10,9 @@ def run_automated_tests(target_url):
     else:
         print("Skipping subdomain scan.")
 
-    print("Scanning ports, please wait...")
     user_choice = input("Do you want to scan ports? (yes or no): ").strip().lower()
     if user_choice in ['yes', 'y']:
+        print("Scanning ports, please wait...")
         target_ip = myinfo.resolve_domain_to_ip(target_url) 
         if isinstance(target_ip, dict) and 'error' in target_ip:
             print(target_ip['error'])
