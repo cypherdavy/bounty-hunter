@@ -4,6 +4,7 @@ dnspython==2.2.1
 paramiko==2.10.3
 shodan==1.26.1
 myinfo==1.1.1
+inclusion==1.0.2
 subspy==2.2.3
 theport==2.1.1
 validlink==0.2
