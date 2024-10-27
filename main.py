@@ -1,6 +1,7 @@
 import myinfo
 from subdomain import scanner
 from port import scan_port
+from inclusion import scan_inclusion  
 
 def run_automated_tests(target_url):
     print("Scanning subdomains, please wait...")
@@ -20,6 +21,12 @@ def run_automated_tests(target_url):
         scan_port.scan_ports(target_ip) 
     else:
         print("Skipping port scan.")
+
+    user_choice = input("Do you want to scan for inclusion vulnerabilities? (yes or no): ").strip().lower()
+    if user_choice in ['yes', 'y']:
+        scan_inclusion(target_url) 
+    else:
+        print("Skipping inclusion scan.") 
 
 if __name__ == "__main__":
     target_url = input("Enter the target URL: ")
