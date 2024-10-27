@@ -1,7 +1,7 @@
 import myinfo
 from subdomain import scanner
 from port import scan_port
-from inclusion import scan_inclusion  
+from inclusions import scan_inclusion  
 
 def run_automated_tests(target_url):
     print("Scanning subdomains, please wait...")
