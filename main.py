@@ -24,7 +24,7 @@ def run_automated_tests(target_url):
 
     user_choice = input("Do you want to scan for inclusion vulnerabilities? (yes or no): ").strip().lower()
     if user_choice in ['yes', 'y']:
-        scan_inclusion(target_url) 
+        scan.scan_inclusion(target_url) 
     else:
         print("Skipping inclusion scan.") 
 
