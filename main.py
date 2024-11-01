@@ -31,10 +31,10 @@ def display_whois_info(target_url):
 
     print("Website info:")
     if formatted_whois and formatted_ip_info:
-        print(f"Website IP: {formatted_ip_info.get('ip_address', 'N/A')}")
-        print(f"Country: {formatted_ip_info.get('country', 'N/A')}")
-        print(f"Creation Date: {formatted_whois.get('creation_date', 'N/A')}")
-        print(f"Registry Expiry Date: {formatted_whois.get('registry_expiry_date', 'N/A')}")
+        print(f"Website IP : {formatted_ip_info.get('ip_address', 'N/A')}")
+        print(f"Country : {formatted_ip_info.get('country', 'N/A')}")
+        print(f"Creation Date : {formatted_whois.get('creation_date', 'N/A')}")
+        print(f"Registry Expiry Date : {formatted_whois.get('registry_expiry_date', 'N/A')}")
     else:
         print("Website IP and country information not available.")
 
