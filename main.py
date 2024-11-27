@@ -49,6 +49,14 @@ def run_automated_tests(target_url):
     else:
         print("Skipping subdomain scan.")
 
+    print("Clickjacking scanning, please wait...")
+    user_choice = input("Do you want to scan for clickjacking vulnerabilities? (yes or no): ").strip().lower()
+    if user_choice in ['yes', 'y']:
+        print("Starting clickjacking scan...")
+        scanner.scan_subdomains(domain)
+    else:
+        print("Skipping clickjacking scan. Proceeding without scanning for clickjacking vulnerabilities.")
+
     user_choice = input("Do you want to scan ports? (yes or no) : ").strip().lower()
     if user_choice in ['yes', 'y']:
         print("Scanning ports, please wait...")
