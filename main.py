@@ -53,7 +53,7 @@ def run_automated_tests(target_url):
     user_choice = input("Do you want to scan for clickjacking vulnerabilities? (yes or no): ").strip().lower()
     if user_choice in ['yes', 'y']:
         print("Starting clickjacking scan...")
-        clickscan.scan(domain)
+        clickscan.scan(target_url)
     else:
         print("Skipping clickjacking scan. Proceeding without scanning for clickjacking vulnerabilities.")
 
