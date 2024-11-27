@@ -5,3 +5,4 @@ inclusion==1.0.2
 subspy==2.2.3
 theport==2.1.1
 validlink==0.2
+vulheader==1.0.1
