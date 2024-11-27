@@ -14,7 +14,7 @@ def print_vulnerability(header, status):
     if status == "missing" and header in details:
         print(f"Details: {details[header]}")
 
-def scan_inclusion(target_url):
+def scan(target_url):
     headers_to_check = [
         "Strict-Transport-Security",
         "Content-Security-Policy",
