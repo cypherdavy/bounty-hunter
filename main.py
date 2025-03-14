@@ -3,7 +3,6 @@ from subdomain import scanner
 from port import scan_port
 from inclusions import scan
 from clickjacking import clickscan
-
 def clean_url(url):
     return url.split("://")[-1].split("/")[0]
 
